@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34701.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgriEnergyConnectPlatform", "AgriEnergyConnectPlatform\AgriEnergyConnectPlatform.csproj", "{449729FB-9351-42F7-8C47-809947EFA93D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{B0273907-12DF-47D4-B29C-B5A62B9C9988}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{449729FB-9351-42F7-8C47-809947EFA93D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{449729FB-9351-42F7-8C47-809947EFA93D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{449729FB-9351-42F7-8C47-809947EFA93D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{449729FB-9351-42F7-8C47-809947EFA93D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0273907-12DF-47D4-B29C-B5A62B9C9988}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0273907-12DF-47D4-B29C-B5A62B9C9988}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0273907-12DF-47D4-B29C-B5A62B9C9988}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0273907-12DF-47D4-B29C-B5A62B9C9988}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {09D91600-E02A-4FDB-A665-4C1563FB4A69}
+	EndGlobalSection
+EndGlobal
