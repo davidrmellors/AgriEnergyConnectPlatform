@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data.Models
 {
-    internal class Transaction
+    public class Transaction
     {
         public int TransactionID { get; set; }
         public int Quantity { get; set; }
@@ -14,8 +14,12 @@ namespace Data.Models
         public DateTime TimeStamp { get; set; }
 
         // Foreign Keys
+
+        // many to one relationship with Product
         public int ProductID { get; set; }
         public Product Product { get; set; }
+
+        // many to one relationship with User
 
         public int UserID { get; set; }
         public User User { get; set; }

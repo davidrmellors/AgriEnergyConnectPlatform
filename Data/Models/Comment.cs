@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data.Models
 {
-    internal class Comment
+    public class Comment
     {
         public int CommentID { get; set; }
         public string Content { get; set; }

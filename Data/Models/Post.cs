@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data.Models
 {
-    internal class Post
+    public class Post
     {
         public int PostID { get; set; }
         public string Content { get; set; }

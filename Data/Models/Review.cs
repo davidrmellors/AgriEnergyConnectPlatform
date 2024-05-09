@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data.Models
 {
-    internal class Review
+    public class Review
     {
         public int ReviewID { get; set; }
         public int Rating { get; set; }

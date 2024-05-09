@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data.Models
 {
-    internal class Project
+    public class Project
     {
         public int ProjectID { get; set; }
         public string Title { get; set; }
@@ -18,7 +18,7 @@ namespace Data.Models
         // many to many relationship with User
         public virtual ICollection<User> Users { get; set; }
 
-
+        // many to many relationship with FundingSource
         public virtual ICollection<FundingSource> FundingSources { get; set; }
     }
 }
