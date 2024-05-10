@@ -15,7 +15,7 @@ namespace Data.Models
         // Foreign Keys
         
         // Many to one relationship with User
-        public int UserID { get; set; }
+        public string UserID { get; set; }
         public User User { get; set; }
 
         // Many to one relationship with Post

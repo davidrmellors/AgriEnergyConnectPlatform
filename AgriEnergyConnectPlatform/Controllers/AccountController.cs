@@ -5,14 +5,69 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace AgriEnergyConnectPlatform.Controllers
 {
     public class AccountController : Controller
     {
+        private SignInManager<User, string> _signInManager;
+        private UserManager<User> _userManager;
+        private RoleManager<IdentityRole> _roleManager;
 
-        private Data.AgriConnectContext db = new Data.AgriConnectContext();
+        public AccountController()
+        {
+        }
+
+        public AccountController(UserManager<User> userManager, SignInManager<User, string> signInManager,
+            RoleManager<IdentityRole> roleManager)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _roleManager = roleManager;
+        }
+
+        public UserManager<User> UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<UserManager<User>>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
+        public SignInManager<User, string> SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<SignInManager<User, string>>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+
+        public RoleManager<IdentityRole> RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().Get<RoleManager<IdentityRole>>();
+            }
+            private set
+            {
+                _roleManager = value;
+            }
+        }
+
+
         // GET: Account
         public ActionResult Index()
         {
@@ -21,72 +76,62 @@ namespace AgriEnergyConnectPlatform.Controllers
 
         public ActionResult Login()
         {
+            ViewBag.Title = "Login";
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginViewModel model)
+        public async Task<ActionResult> Login(LoginViewModel model)
         {
-
             if (ModelState.IsValid)
             {
-                var user = db.Users.FirstOrDefault(u => 
-                u.Email == model.Email && u.Password == model.Password);
-
-                if(user != null)
+                var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+                if (result == SignInStatus.Success)
                 {
-                    FormsAuthentication.SetAuthCookie(model.Email, false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Resources", "FarmingHub");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Invalid email or password.");
+                    ModelState.AddModelError("", "Invalid login attempt.");
                 }
             }
 
             return View(model);
         }
 
-        public ActionResult Register() 
+        public ActionResult Register()
         {
             return View();
         }
 
-        // POST: Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var exisitingUser = db.Users.FirstOrDefault(u =>
-                u.Email == model.Email);
+                var user = new User { UserName = model.Email, Email = model.Email, Name = model.Name };
+                var result = await UserManager.CreateAsync(user, model.Password);
 
-                if(exisitingUser == null)
+                if (result.Succeeded)
                 {
-                    var user = new User
-                    {
-                        Name = model.Name,
-                        Email = model.Email,
-                        Password = model.Password, // Hash this password before saving
-                                                   // Set other default values, if any
-                    };
-
-                    db.Users.Add(user);
-                    db.SaveChanges();
-
-                    // Optionally log in the user and redirect them
+                    await UserManager.AddToRoleAsync(user.Id, "Admin");
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     return RedirectToAction("Login", "Account");
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Email address already in use.");
-                }
-                
+                AddErrors(result);
             }
 
             return View(model);
+        }
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
         }
     }
 }

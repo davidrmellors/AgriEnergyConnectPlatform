@@ -18,3 +18,62 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.background-image {
+    background-image: url('Images/pexels-reto-burkler-640438-1443867.jpg');
+    background-size: cover; /* Cover the entire container */
+    background-position: center; /* Center the background image */
+    height: 100vh; /* Set a specific height, or it could be 100vh for full viewport height */
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url(Fonts/Inter-ExtraBold.ttf) format('truetype');
+}
+
+body {
+    font-family: 'Inter';
+    color:white;
+}
+
+.btn-background {
+    background-color: #51701A;
+    color: white;
+}
+
+#sub-title {
+    color: #304C30;
+    font-weight: bold;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+#title {
+    font-weight: 700;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    font-size: 3em;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.container.body-content {
+    flex: 1;
+}
+
+.navbar-nav .nav-link {
+    color: grey; /* Default color for unselected items */
+    transition: color 0.3s; /* Smooth transition for color change */
+    font-size: 1.5em;
+}
+
+.navbar-nav .nav-link {
+    color: gray !important; /* Ensures override of any other styles */
+
+}

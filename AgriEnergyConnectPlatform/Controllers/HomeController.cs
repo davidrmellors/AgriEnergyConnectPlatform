@@ -10,6 +10,7 @@ namespace AgriEnergyConnectPlatform.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.Title = "Home";
             return View();
         }
 
@@ -26,5 +27,6 @@ namespace AgriEnergyConnectPlatform.Controllers
 
             return View();
         }
+
     }
 }

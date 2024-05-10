@@ -6,15 +6,21 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using System.IO;
 using Data.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Data
 {
-    public class AgriConnectContext : DbContext
+    public class AgriConnectContext : IdentityDbContext<User>
     {
         public AgriConnectContext() : base("name=AgriConnectContext")
         {
 
             Database.SetInitializer(new CreateDatabaseIfNotExists<AgriConnectContext>());
+        }
+
+        public static AgriConnectContext Create()
+        {
+            return new AgriConnectContext();
         }
 
 
@@ -26,13 +32,13 @@ namespace Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
-        public DbSet<User> Users { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
-                .HasKey(u => u.UserID);
-            
+
+            base.OnModelCreating(modelBuilder);
+
             // User has many posts
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Posts)
@@ -161,8 +167,6 @@ namespace Data
 
 
         }
-
-
 
     }
 }

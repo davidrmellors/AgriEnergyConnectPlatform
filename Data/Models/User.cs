@@ -1,26 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Data.Models
 {
-    public class User
+    public class User : IdentityUser
     {
-
-        public int UserID { get; set; }
+        // Additional properties specific to your application
         public string Name { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string Role { get; set; }
+        public string Role { get; set; } // Consider using built-in role management instead
 
-        // Foreign Keys
+        // Navigation properties
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
         public virtual ICollection<Transaction> Transactions { get; set; }
         public virtual ICollection<Course> Courses { get; set; }
         public virtual ICollection<Project> Projects { get; set; }
+
+        // Constructor to initialize collections
+        //public User()
+        //{
+        //    Posts = new HashSet<Post>();
+        //    Comments = new HashSet<Comment>();
+        //    Reviews = new HashSet<Review>();
+        //    Transactions = new HashSet<Transaction>();
+        //    Courses = new HashSet<Course>();
+        //    Projects = new HashSet<Project>();
+        //}
     }
 }
