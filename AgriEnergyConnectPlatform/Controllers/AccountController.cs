@@ -80,6 +80,13 @@ namespace AgriEnergyConnectPlatform.Controllers
             return View();
         }
 
+        public ActionResult Logout()
+        {
+            var authenticationManager = HttpContext.GetOwinContext().Authentication;
+            authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Index", "Home");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model)
