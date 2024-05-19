@@ -3,28 +3,27 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/Content/Site.css" />
-    <title>@ViewBag.Title - Agri-Enerfy Connect</title>
+    <title>@ViewBag.Title - Agri-Energy Connect</title>
     @Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="~/Content/Site.css" />
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body class="background-image">
+<body class="">
     <nav class="navbar navbar-expand-md navbar-toggleable-md bg-transparent">
         <div class="container m-2">
             <ul class="navbar-nav flex-grow-1">
                 <li class="nav-item">
-                    @Html.ActionLink("Home", "Index", "Home", new { area = "" })
+                    @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })
                 </li>
                 <li class="nav-item">
-                    @Html.ActionLink("Login", "Login", "Account", new { area = "" })
+                    @Html.ActionLink("Login", "Login", "Account", null, new { @class = "nav-link" })
                 </li>
             </ul>
         </div>
     </nav>
-    <div class="container body-content">
+    <div class="h-100">
         @RenderBody()
         <hr />
-
     </div>
     <footer>
         <p>&copy; @DateTime.Now.Year - Agri-Energy Connect Platform</p>

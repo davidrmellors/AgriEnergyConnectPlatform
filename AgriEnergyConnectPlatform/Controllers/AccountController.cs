@@ -89,7 +89,7 @@ namespace AgriEnergyConnectPlatform.Controllers
                 var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
                 if (result == SignInStatus.Success)
                 {
-                    return RedirectToAction("Resources", "FarmingHub");
+                    return RedirectToAction("FarmingHub", "FarmingHub");
                 }
                 else
                 {

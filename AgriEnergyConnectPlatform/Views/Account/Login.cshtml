@@ -4,30 +4,41 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Login</h2>
+<div class="w-100 h-100 background-image d-flex flex-column justify-content-center align-items-center">
 
-@using (Html.BeginForm("Login", "Account", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Email)
-        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.Email)
+    <div class="text-center d-flex flex-column justify-content-center align-items-center flex-grow-1">
+        <h5 id="sub-title">Agri-Energy Connect</h5>
+        <h2 id="title">Log In</h2>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Password)
-        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.Password)
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.RememberMe)
-        @Html.CheckBoxFor(model => model.RememberMe, new { @class = "form-check-input" })
-        @Html.ValidationMessageFor(model => model.RememberMe)
-    </div>
 
-    <button type="submit" class="btn btn-primary">Login</button>
-}
+    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "flex-grow-1" }))
+    {
+        @Html.AntiForgeryToken()
 
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email)
+            @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Email)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password)
+            @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Password)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RememberMe)
+            @Html.CheckBoxFor(model => model.RememberMe, new { @class = "form-check-input" })
+            @Html.ValidationMessageFor(model => model.RememberMe)
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary w-100 btn-background">Login</button>
+        </div>
+
+    }
+
+</div>
