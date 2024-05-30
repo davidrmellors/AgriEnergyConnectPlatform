@@ -23,14 +23,6 @@ textarea {
     max-width: 280px;
 }
 
-.navbar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000; /* Ensure it stays on top */
-    padding: 0;
-}
 
 .background-image {
     background-image: url('Images/pexels-reto-burkler-640438-1443867.jpg');
@@ -147,7 +139,8 @@ html, body {
 }
 
 
-.tab-nav-background {
+.tab-nav-background,
+.footer-background {
     background-color: #0F2D12 !important;
 }
 
@@ -177,4 +170,87 @@ html, body {
 
 .discussion-tab h3 {
     font-weight: 700;
+}
+
+.profile-label {
+    color: #0F2D12 !important;
+    text-shadow: none;
+}
+
+.product-label {
+    color: #777 !important;
+    text-shadow: none;
+}
+
+.product-price-label {
+    color: #000 !important;
+    font-weight: 700;
+}
+
+.filter-icons .filter-item {
+    display: flex;
+    align-items: center;
+    color: #28a745;
+}
+
+.filter-icons .filter-item i {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+}
+
+.product-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 0.5rem;
+    height: 100%;
+    max-width: 300px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-card .card-img-top {
+    height: 200px;
+    width: 100%;
+    object-fit: contain; /* or cover if you want the image to cover the entire area */
+}
+
+.product-card .card-body {
+    text-align: center;
+    flex: 1;
+}
+
+.product-card .btn {
+    width: 100%;
+}
+
+.search-bar {
+    width: 40%;
+}
+
+.learn-more-btn {
+    border: none !important; /* Remove default border */
+    padding: 10px 20px !important; /* Padding for the button */
+    cursor: pointer !important; /* Pointer cursor on hover */
+    transition: background-color 0.3s, color 0.3s !important; /* Smooth transition for background and text color */
+}
+
+.learn-more-btn:hover {
+    background-color: #51701A;
+}
+
+learn-more-btn:active {
+    background-color: #51701A;
+}
+
+
+
+/* Optionally, handle focus state to match the design */
+learn-more-btn:focus {
+    outline: none !important; /* Remove default focus outline */
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5) !important; /* Custom focus outline */
+}
+
+.edit-product-btn {
+    margin-right: 5px;
 }

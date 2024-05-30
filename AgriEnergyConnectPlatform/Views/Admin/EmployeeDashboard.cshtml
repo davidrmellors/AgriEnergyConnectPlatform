@@ -1,0 +1,129 @@
+﻿@using Data.Extensions
+@model IEnumerable<Data.Models.Product>
+
+@{
+    ViewBag.Title = "Employee Dashboard";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div>
+    <div class="container mt-4">
+        <div class="header text-start w-100 mb-5 mt-5">
+            <h1 class="display-4 green-title">Employee Dashboard</h1>
+        </div>
+
+        <!-- Add New Farmer Profile Form -->
+        <div class="card mb-4">
+            <div class="card-header tab-nav-background">
+                Add New Farmer Profile
+            </div>
+            <div class="card-body">
+                <form method="post" action="@Url.Action("AddFarmer", "Admin")">
+                    <div class="form-group">
+                        <label class="profile-label" for="FarmerName">Farmer Name</label>
+                        <input type="text" class="form-control" id="FarmerName" name="FarmerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="profile-label" for="FarmerEmail">Email</label>
+                        <input type="email" class="form-control" id="FarmerEmail" name="FarmerEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="profile-label" for="FarmerPassword">Password</label>
+                        <input type="password" class="form-control" id="FarmerPassword" name="FarmerPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Add Farmer</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Add New Employee Account Form (Visible to Admin only) -->
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="card mb-4">
+                <div class="card-header tab-nav-background">
+                    Add New Employee Account
+                </div>
+                <div class="card-body">
+                    <form method="post" action="@Url.Action("AddEmployee", "Admin")">
+                        <div class="form-group">
+                            <label class="profile-label" for="EmployeeName">Employee Name</label>
+                            <input type="text" class="form-control" id="EmployeeName" name="EmployeeName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="profile-label" for="EmployeeEmail">Email</label>
+                            <input type="email" class="form-control" id="EmployeeEmail" name="EmployeeEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="profile-label" for="EmployeePassword">Password</label>
+                            <input type="password" class="form-control" id="EmployeePassword" name="EmployeePassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">Add Employee</button>
+                    </form>
+                </div>
+            </div>
+        }
+
+        <!-- Filter Products Form -->
+        <div class="card mb-4">
+            <div class="card-header tab-nav-background">
+                Filter Products
+            </div>
+            <div class="card-body">
+                <form method="get" action="@Url.Action("FilterProducts", "Admin")">
+                    <div class="form-group">
+                        <label class="profile-label" for="FarmerId">Farmer</label>
+                        <select class="form-control" id="FarmerId" name="FarmerId">
+                            <option value="">All Farmers</option>
+                            @foreach (var farmer in ViewBag.Farmers)
+                            {
+                                <option value="@farmer.Id">@farmer.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="profile-label" for="ProductName">Product Name</label>
+                        <input type="text" class="form-control" id="ProductName" name="ProductName">
+                    </div>
+                    <div class="form-group">
+                        <label class="profile-label" for="Category">Category</label>
+                        <input type="text" class="form-control" id="Category" name="Category">
+                    </div>
+                    <div class="form-group">
+                        <label class="profile-label" for="StartDate">Start Date</label>
+                        <input type="date" class="form-control" id="StartDate" name="StartDate">
+                    </div>
+                    <div class="form-group">
+                        <label class="profile-label" for="EndDate">End Date</label>
+                        <input type="date" class="form-control" id="EndDate" name="EndDate">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Display Products -->
+        <div class="row">
+            @foreach (var product in Model)
+            {
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card product-card">
+                        <img src="@Url.Content(product.ProductImagePath)" class="card-img-top" alt="@product.ProductName">
+                        <div class="card-body">
+                            <h5 class="card-title product-label">@product.ProductName</h5>
+                            <p class="card-text product-price-label">R @product.Price</p>
+                            <p class="card-text product-label">Production Date: @product.ProductionDate.ToShortDateString()</p>
+                            @if (product.Stock > 0)
+                            {
+                                <p class="card-text product-label">In Stock</p>
+                            }
+                            else
+                            {
+                                <p class="card-text product-label">Out of Stock</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

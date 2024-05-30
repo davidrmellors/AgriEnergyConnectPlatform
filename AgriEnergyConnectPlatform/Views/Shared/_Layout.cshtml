@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="~/Content/Site.css" />
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body class="">
+<body class="background-image">
     <nav class="navbar navbar-expand-md navbar-toggleable-md bg-transparent">
         <div class="container m-2">
             <ul class="navbar-nav flex-grow-1">
@@ -21,11 +21,10 @@
             </ul>
         </div>
     </nav>
-    <div class="h-100">
+    <div class="flex-grow-1">
         @RenderBody()
-        <hr />
     </div>
-    <footer>
+    <footer class="footer-background">
         <p>&copy; @DateTime.Now.Year - Agri-Energy Connect Platform</p>
     </footer>
 

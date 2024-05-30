@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Data.Models.Product>
+
+@{
+    Layout = "~/Views/Shared/FarmerLayout.cshtml";
+    ViewBag.Title = "Green Energy Marketplace";
+}
+
+<div class="">
+    <div class="scrollable-content">
+        <div class="header text-start w-100 p-5">
+            <h1 class="display-4 green-title">Green Energy<br>Marketplace</h1>
+        </div>
+
+        <div class="container mt-4 tab-content-background">
+            <!-- Search bar and filters -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="input-group search-bar">
+                    <input type="text" class="form-control" placeholder="Search for products...">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-success" type="button"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                <div class="filter-icons d-flex align-items-center">
+                    <div class="filter-item mr-3">
+                        <i class="fas fa-dollar-sign"></i>
+                        <span>Price Range</span>
+                    </div>
+                    <div class="filter-item mr-3">
+                        <i class="fas fa-star"></i>
+                        <span>Rating</span>
+                    </div>
+                    <div class="filter-item">
+                        <i class="fas fa-leaf"></i>
+                        <span>Carbon Emission</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products grid -->
+            <div class="row">
+                @if (Model.Count() > 0) {
+                    foreach (var product in Model)
+                    {
+                        <div class="col-md-6 col-lg-3 mb-4">
+                            <div class="card product-card">
+                                <img src="@Url.Content(product.ProductImagePath)" class="card-img-top" alt="@product.ProductName">
+                                <div class="card-body">
+                                    <h5 class="card-title product-label">@product.ProductName</h5>
+                                    <p class="card-text product-price-label">R @product.Price</p>
+                                    @if (product.Stock > 0) 
+                                    {
+                                        <p class="card-text product-label">In Stock</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="card-text product-label">Out of Stock</p>
+                                    }
+                                    <button class="btn btn-success">Add to cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

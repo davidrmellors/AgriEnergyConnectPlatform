@@ -57,6 +57,16 @@ namespace AgriEnergyConnectPlatform.App_Start
                     var role = new IdentityRole("Admin");
                     await roleManager.CreateAsync(role);
                 }
+                if (!await roleManager.RoleExistsAsync("Employee"))
+                {
+                    var role = new IdentityRole("Employee");
+                    await roleManager.CreateAsync(role);
+                }
+                if (!await roleManager.RoleExistsAsync("Farmer"))
+                {
+                    var role = new IdentityRole("Farmer");
+                    await roleManager.CreateAsync(role);
+                }
                 // Add other roles as necessary
 
                 await next();

@@ -156,8 +156,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\FarmingHubController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MarketplaceController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -226,11 +228,14 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\FarmingHub\FarmingHub.cshtml" />
     <Content Include="Views\Admin\Dashboard.cshtml" />
-    <Content Include="Views\Shared\EmployeeLayout.cshtml" />
+    <Content Include="Views\Shared\FarmerLayout.cshtml" />
+    <Content Include="Views\Account\MyProfile.cshtml" />
+    <Content Include="Views\Marketplace\Marketplace.cshtml" />
+    <Content Include="Views\Admin\EmployeeDashboard.cshtml" />
+    <Content Include="Views\Shared\AdminLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="Views\Marketplace\" />
+    <Folder Include="Views\Employee\" />
     <Folder Include="Views\Projects\" />
     <Folder Include="Views\Training\" />
   </ItemGroup>

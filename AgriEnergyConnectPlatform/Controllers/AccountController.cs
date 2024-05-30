@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Data;
 
 namespace AgriEnergyConnectPlatform.Controllers
 {
@@ -18,6 +19,7 @@ namespace AgriEnergyConnectPlatform.Controllers
         private SignInManager<User, string> _signInManager;
         private UserManager<User> _userManager;
         private RoleManager<IdentityRole> _roleManager;
+        private AgriConnectContext db = new AgriConnectContext();
 
         public AccountController()
         {
@@ -80,11 +82,19 @@ namespace AgriEnergyConnectPlatform.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult Logout()
         {
             var authenticationManager = HttpContext.GetOwinContext().Authentication;
             authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult MyProfile()
+        {
+            string userId = User.Identity.GetUserId();
+            var products = db.Products.Where(p => p.UserId == userId).ToList();
+            return View(products);
         }
 
         [HttpPost]
@@ -96,6 +106,12 @@ namespace AgriEnergyConnectPlatform.Controllers
                 var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
                 if (result == SignInStatus.Success)
                 {
+                    if(UserManager.IsInRole(UserManager.FindByEmail(model.Email).Id, "Admin") ||
+                        UserManager.IsInRole(UserManager.FindByEmail(model.Email).Id, "Employee"))
+                    {
+                        return RedirectToAction("EmployeeDashboard", "Admin");
+                    }
+
                     return RedirectToAction("FarmingHub", "FarmingHub");
                 }
                 else

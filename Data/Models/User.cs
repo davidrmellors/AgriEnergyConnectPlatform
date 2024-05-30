@@ -7,7 +7,6 @@ namespace Data.Models
     {
         // Additional properties specific to your application
         public string Name { get; set; }
-        public string Role { get; set; } // Consider using built-in role management instead
 
         // Navigation properties
         public virtual ICollection<Post> Posts { get; set; }
@@ -16,6 +15,7 @@ namespace Data.Models
         public virtual ICollection<Transaction> Transactions { get; set; }
         public virtual ICollection<Course> Courses { get; set; }
         public virtual ICollection<Project> Projects { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
 
         // Constructor to initialize collections
         //public User()

@@ -75,17 +75,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgriConnectContext.cs" />
-    <Compile Include="Migrations\202404180044593_InitialCreate.cs" />
-    <Compile Include="Migrations\202404180044593_InitialCreate.Designer.cs">
-      <DependentUpon>202404180044593_InitialCreate.cs</DependentUpon>
+    <Compile Include="Extensions\IdentityExtensions.cs" />
+    <Compile Include="Migrations\202405301022438_InitialCreate.cs" />
+    <Compile Include="Migrations\202405301022438_InitialCreate.Designer.cs">
+      <DependentUpon>202405301022438_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202405081111228_UpdateUserTable.cs" />
-    <Compile Include="Migrations\202405081111228_UpdateUserTable.Designer.cs">
-      <DependentUpon>202405081111228_UpdateUserTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202405090621586_AdjustUserModel.cs" />
-    <Compile Include="Migrations\202405090621586_AdjustUserModel.Designer.cs">
-      <DependentUpon>202405090621586_AdjustUserModel.cs</DependentUpon>
+    <Compile Include="Migrations\202405301426297_RemoveRoleColFromUser.cs" />
+    <Compile Include="Migrations\202405301426297_RemoveRoleColFromUser.Designer.cs">
+      <DependentUpon>202405301426297_RemoveRoleColFromUser.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Comment.cs" />
@@ -115,16 +112,15 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202404180044593_InitialCreate.resx">
-      <DependentUpon>202404180044593_InitialCreate.cs</DependentUpon>
+    <Folder Include="ProductImages\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202405301022438_InitialCreate.resx">
+      <DependentUpon>202405301022438_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202405081111228_UpdateUserTable.resx">
-      <DependentUpon>202405081111228_UpdateUserTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202405090621586_AdjustUserModel.resx">
-      <DependentUpon>202405090621586_AdjustUserModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202405301426297_RemoveRoleColFromUser.resx">
+      <DependentUpon>202405301426297_RemoveRoleColFromUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

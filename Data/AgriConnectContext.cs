@@ -7,11 +7,20 @@ using System.Data.Entity;
 using System.IO;
 using Data.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Diagnostics;
 
 namespace Data
 {
     public class AgriConnectContext : IdentityDbContext<User>
     {
+        //static AgriConnectContext()
+        //{
+        //    string relativePath = @"..\..\Database"; 
+        //    string absolutePath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath));
+        //    Debug.WriteLine($"DataDirectory Path: {absolutePath}"); 
+        //    AppDomain.CurrentDomain.SetData("DataDirectory", absolutePath);
+        //}
+
         public AgriConnectContext() : base("name=AgriConnectContext")
         {
 
