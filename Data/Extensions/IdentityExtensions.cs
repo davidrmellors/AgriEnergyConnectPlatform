@@ -8,8 +8,16 @@ using Microsoft.AspNet.Identity;
 
 namespace Data.Extensions
 {
+    /// <summary>
+    /// Provides extension methods for the IIdentity interface.
+    /// </summary>
     public static class IdentityExtensions
     {
+        /// <summary>
+        /// Gets the first name of the user associated with the specified identity.
+        /// </summary>
+        /// <param name="identity">The identity of the user.</param>
+        /// <returns>The first name of the user.</returns>
         public static string GetUserFirstName(this IIdentity identity)
         {
             var userId = identity.GetUserId();
@@ -20,6 +28,11 @@ namespace Data.Extensions
             }
         }
 
+        /// <summary>
+        /// Gets the email of the user associated with the specified identity.
+        /// </summary>
+        /// <param name="identity">The identity of the user.</param>
+        /// <returns>The email of the user.</returns>
         public static string GetUserEmail(this IIdentity identity)
         {
             var userId = identity.GetUserId();
@@ -29,6 +42,6 @@ namespace Data.Extensions
                 return user?.Email;
             }
         }
-
     }
 }
+//-----------------------------------------------------END-OF-FILE-----------------------------------------------------//

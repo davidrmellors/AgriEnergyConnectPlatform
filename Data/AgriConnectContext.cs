@@ -11,38 +11,73 @@ using System.Diagnostics;
 
 namespace Data
 {
+    /// <summary>
+    /// Represents the database context for the AgriConnect application.
+    /// </summary>
     public class AgriConnectContext : IdentityDbContext<User>
     {
-        //static AgriConnectContext()
-        //{
-        //    string relativePath = @"..\..\Database"; 
-        //    string absolutePath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath));
-        //    Debug.WriteLine($"DataDirectory Path: {absolutePath}"); 
-        //    AppDomain.CurrentDomain.SetData("DataDirectory", absolutePath);
-        //}
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AgriConnectContext"/> class.
+        /// </summary>
         public AgriConnectContext() : base("name=AgriConnectContext")
         {
-
             Database.SetInitializer(new CreateDatabaseIfNotExists<AgriConnectContext>());
         }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="AgriConnectContext"/> class.
+        /// </summary>
+        /// <returns>A new instance of the <see cref="AgriConnectContext"/> class.</returns>
         public static AgriConnectContext Create()
         {
             return new AgriConnectContext();
         }
 
-
+        /// <summary>
+        /// Gets or sets the comments in the database.
+        /// </summary>
         public DbSet<Comment> Comments { get; set; }
+
+        /// <summary>
+        /// Gets or sets the courses in the database.
+        /// </summary>
         public DbSet<Course> Courses { get; set; }
-        public DbSet<FundingSource> FundingSources { get; set;}
+
+        /// <summary>
+        /// Gets or sets the funding sources in the database.
+        /// </summary>
+        public DbSet<FundingSource> FundingSources { get; set; }
+
+        /// <summary>
+        /// Gets or sets the posts in the database.
+        /// </summary>
         public DbSet<Post> Posts { get; set; }
+
+        /// <summary>
+        /// Gets or sets the products in the database.
+        /// </summary>
         public DbSet<Product> Products { get; set; }
+
+        /// <summary>
+        /// Gets or sets the projects in the database.
+        /// </summary>
         public DbSet<Project> Projects { get; set; }
+
+        /// <summary>
+        /// Gets or sets the reviews in the database.
+        /// </summary>
         public DbSet<Review> Reviews { get; set; }
+
+        /// <summary>
+        /// Gets or sets the transactions in the database.
+        /// </summary>
         public DbSet<Transaction> Transactions { get; set; }
 
-
+//-------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Configures the schema needed for the identity framework.
+        /// </summary>
+        /// <param name="modelBuilder">The builder being used to construct the model for this context.</param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 
@@ -179,3 +214,4 @@ namespace Data
 
     }
 }
+//-----------------------------------------------------END-OF-FILE-----------------------------------------------------//

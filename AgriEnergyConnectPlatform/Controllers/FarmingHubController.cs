@@ -10,7 +10,7 @@ namespace AgriEnergyConnectPlatform.Controllers
     {
         // GET: FarmingHub
         [Authorize]
-        public ActionResult FarmingHub()
+        public ActionResult Index()
         {
             return View();
         }

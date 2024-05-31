@@ -160,6 +160,8 @@
     <Compile Include="Controllers\FarmingHubController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MarketplaceController.cs" />
+    <Compile Include="Controllers\ProjectsController.cs" />
+    <Compile Include="Controllers\TrainingController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -184,7 +186,13 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\Images\Course1.png" />
+    <Content Include="Content\Images\OrganicFarming.png" />
     <Content Include="Content\Images\pexels-reto-burkler-640438-1443867.jpg" />
+    <Content Include="Content\Images\Project1.png" />
+    <Content Include="Content\Images\SoilManagement.png" />
+    <Content Include="Content\Images\SolarFarm.png" />
+    <Content Include="Content\Images\WaterSaving.png" />
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -226,19 +234,17 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\FarmingHub\FarmingHub.cshtml" />
-    <Content Include="Views\Admin\Dashboard.cshtml" />
+    <Content Include="Views\FarmingHub\Index.cshtml" />
     <Content Include="Views\Shared\FarmerLayout.cshtml" />
     <Content Include="Views\Account\MyProfile.cshtml" />
-    <Content Include="Views\Marketplace\Marketplace.cshtml" />
-    <Content Include="Views\Admin\EmployeeDashboard.cshtml" />
+    <Content Include="Views\Marketplace\Index.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Shared\AdminLayout.cshtml" />
-    <Content Include="Views\Account\ProfileUpdated.cshtml" />
+    <Content Include="Views\Projects\Index.cshtml" />
+    <Content Include="Views\Training\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Employee\" />
-    <Folder Include="Views\Projects\" />
-    <Folder Include="Views\Training\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

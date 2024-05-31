@@ -15,6 +15,9 @@ using Data.Extensions;
 
 namespace AgriEnergyConnectPlatform.Controllers
 {
+    /// <summary>
+    /// Controller for managing user accounts.
+    /// </summary>
     public class AccountController : Controller
     {
         private SignInManager<User, string> _signInManager;
@@ -22,10 +25,16 @@ namespace AgriEnergyConnectPlatform.Controllers
         private RoleManager<IdentityRole> _roleManager;
         private AgriConnectContext db = new AgriConnectContext();
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public AccountController()
         {
         }
 
+        /// <summary>
+        /// Constructor with parameters.
+        /// </summary>
         public AccountController(UserManager<User> userManager, SignInManager<User, string> signInManager,
             RoleManager<IdentityRole> roleManager)
         {
@@ -34,6 +43,9 @@ namespace AgriEnergyConnectPlatform.Controllers
             _roleManager = roleManager;
         }
 
+        /// <summary>
+        /// User manager property.
+        /// </summary>
         public UserManager<User> UserManager
         {
             get
@@ -46,6 +58,9 @@ namespace AgriEnergyConnectPlatform.Controllers
             }
         }
 
+        /// <summary>
+        /// Sign in manager property.
+        /// </summary>
         public SignInManager<User, string> SignInManager
         {
             get
@@ -58,6 +73,9 @@ namespace AgriEnergyConnectPlatform.Controllers
             }
         }
 
+        /// <summary>
+        /// Role manager property.
+        /// </summary>
         public RoleManager<IdentityRole> RoleManager
         {
             get
@@ -70,19 +88,26 @@ namespace AgriEnergyConnectPlatform.Controllers
             }
         }
 
-
-        // GET: Account
+        /// <summary>
+        /// GET: Account
+        /// </summary>
         public ActionResult Index()
         {
             return View();
         }
 
+        /// <summary>
+        /// GET: Login
+        /// </summary>
         public ActionResult Login()
         {
             ViewBag.Title = "Login";
             return View();
         }
 
+        /// <summary>
+        /// POST: Logout
+        /// </summary>
         [Authorize]
         public ActionResult Logout()
         {
@@ -91,6 +116,9 @@ namespace AgriEnergyConnectPlatform.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        /// <summary>
+        /// GET: MyProfile
+        /// </summary>
         public ActionResult MyProfile()
         {
             string userId = User.Identity.GetUserId();
@@ -98,105 +126,110 @@ namespace AgriEnergyConnectPlatform.Controllers
             return View(products);
         }
 
-
+        /// <summary>
+        /// POST: Login
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-                if (result == SignInStatus.Success)
-                {
-                    if(UserManager.IsInRole(UserManager.FindByEmail(model.Email).Id, "Admin") ||
-                        UserManager.IsInRole(UserManager.FindByEmail(model.Email).Id, "Employee"))
-                    {
-                        return RedirectToAction("EmployeeDashboard", "Admin");
-                    }
-
-                    return RedirectToAction("FarmingHub", "FarmingHub");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                }
-            }
-            else
+            if (!ModelState.IsValid)
             {
                 ModelState.AddModelError("", "Invalid login attempt.");
+                return View(model);
             }
 
-            return View(model);
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            if (result != SignInStatus.Success)
+            {
+                ModelState.AddModelError("", "Invalid login attempt.");
+                return View(model);
+            }
+
+            var user = await UserManager.FindByEmailAsync(model.Email);
+            if (UserManager.IsInRole(user.Id, "Admin") || UserManager.IsInRole(user.Id, "Employee"))
+            {
+                return RedirectToAction("Index", "Admin");
+            }
+
+            return RedirectToAction("Index", "FarmingHub");
         }
 
+        /// <summary>
+        /// POST: UpdateProfile
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> UpdateProfile(string name, string email, string currentPassword, string newPassword, string confirmPassword)
         {
-
-
-            // Update Profile Information
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            if (user != null)
+            if (user == null)
             {
-                user.Name = name;
-                user.Email = email;
-                if (!string.IsNullOrEmpty(currentPassword) && !string.IsNullOrEmpty(newPassword) && !string.IsNullOrEmpty(confirmPassword))
+                return RedirectToAction("MyProfile", new { Message = ManageMessageId.Error });
+            }
+
+            user.Name = name;
+            user.Email = email;
+
+            if (!string.IsNullOrEmpty(currentPassword) && !string.IsNullOrEmpty(newPassword) && !string.IsNullOrEmpty(confirmPassword))
+            {
+                var passwordChangeResult = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), currentPassword, newPassword);
+                if (!passwordChangeResult.Succeeded)
                 {
-                    var passwordChangeResult = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), currentPassword, newPassword);
-                    if (!passwordChangeResult.Succeeded)
-                    {
-                        AddErrors(passwordChangeResult);
-                    }
-                }
-                var updateResult = await UserManager.UpdateAsync(user);
-                if (!updateResult.Succeeded)
-                {
-                    AddErrors(updateResult);
+                    AddErrors(passwordChangeResult);
+                    return RedirectToAction("MyProfile", new { Message = ManageMessageId.Error });
                 }
             }
 
-            // Change Password if provided
-            
-
-            // Sign in the user with the updated information
-            if (user != null)
+            var updateResult = await UserManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
             {
-                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                AddErrors(updateResult);
+                return RedirectToAction("MyProfile", new { Message = ManageMessageId.Error });
             }
+
+            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
             return RedirectToAction("MyProfile", new { Message = ManageMessageId.ProfileUpdated });
         }
 
-
-
+        /// <summary>
+        /// GET: Register
+        /// </summary>
         public ActionResult Register()
         {
             return View();
         }
 
-
+        /// <summary>
+        /// POST: Register
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = new User { UserName = model.Email, Email = model.Email, Name = model.Name };
-                var result = await UserManager.CreateAsync(user, model.Password);
-
-                if (result.Succeeded)
-                {
-                    await UserManager.AddToRoleAsync(user.Id, "Admin");
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    return RedirectToAction("Login", "Account");
-                }
-                AddErrors(result);
+                return View(model);
             }
 
-            return View(model);
+            var user = new User { UserName = model.Email, Email = model.Email, Name = model.Name };
+            var result = await UserManager.CreateAsync(user, model.Password);
+
+            if (!result.Succeeded)
+            {
+                AddErrors(result);
+                return View(model);
+            }
+
+            await UserManager.AddToRoleAsync(user.Id, "Admin");
+            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+            return RedirectToAction("Login", "Account");
         }
 
+        /// <summary>
+        /// Adds errors to the ModelState.
+        /// </summary>
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
@@ -205,10 +238,13 @@ namespace AgriEnergyConnectPlatform.Controllers
             }
         }
 
+        /// <summary>
+        /// Enum for managing messages.
+        /// </summary>
         public enum ManageMessageId
         {
             ChangePasswordSuccess,
-            ProfileUpdated, // Add this line
+            ProfileUpdated,
             Error
         }
     }

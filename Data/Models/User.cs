@@ -3,29 +3,52 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Data.Models
 {
+    /// <summary>
+    /// Represents a user in the system.
+    /// </summary>
     public class User : IdentityUser
     {
-        // Additional properties specific to your application
+        /// <summary>
+        /// Gets or sets the name of the user.
+        /// </summary>
         public string Name { get; set; }
 
         // Navigation properties
-        public virtual ICollection<Post> Posts { get; set; }
-        public virtual ICollection<Comment> Comments { get; set; }
-        public virtual ICollection<Review> Reviews { get; set; }
-        public virtual ICollection<Transaction> Transactions { get; set; }
-        public virtual ICollection<Course> Courses { get; set; }
-        public virtual ICollection<Project> Projects { get; set; }
-        public virtual ICollection<Product> Products { get; set; }
 
-        // Constructor to initialize collections
-        //public User()
-        //{
-        //    Posts = new HashSet<Post>();
-        //    Comments = new HashSet<Comment>();
-        //    Reviews = new HashSet<Review>();
-        //    Transactions = new HashSet<Transaction>();
-        //    Courses = new HashSet<Course>();
-        //    Projects = new HashSet<Project>();
-        //}
+        /// <summary>
+        /// Gets or sets the posts made by the user.
+        /// </summary>
+        public virtual ICollection<Post> Posts { get; set; }
+
+        /// <summary>
+        /// Gets or sets the comments made by the user.
+        /// </summary>
+        public virtual ICollection<Comment> Comments { get; set; }
+
+        /// <summary>
+        /// Gets or sets the reviews made by the user.
+        /// </summary>
+        public virtual ICollection<Review> Reviews { get; set; }
+
+        /// <summary>
+        /// Gets or sets the transactions made by the user.
+        /// </summary>
+        public virtual ICollection<Transaction> Transactions { get; set; }
+
+        /// <summary>
+        /// Gets or sets the courses associated with the user.
+        /// </summary>
+        public virtual ICollection<Course> Courses { get; set; }
+
+        /// <summary>
+        /// Gets or sets the projects associated with the user.
+        /// </summary>
+        public virtual ICollection<Project> Projects { get; set; }
+
+        /// <summary>
+        /// Gets or sets the products associated with the user.
+        /// </summary>
+        public virtual ICollection<Product> Products { get; set; }
     }
 }
+//-----------------------------------------------------END-OF-FILE-----------------------------------------------------//

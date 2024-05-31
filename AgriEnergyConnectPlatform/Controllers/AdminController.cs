@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.Web.Helpers;
 
 namespace AgriEnergyConnectPlatform.Controllers
 {
@@ -22,9 +23,10 @@ namespace AgriEnergyConnectPlatform.Controllers
         }
 
         [Authorize(Roles = "Admin, Employee")]
-        public ActionResult EmployeeDashboard()
+        public ActionResult Index()
         {
             var farmerRole = db.Roles.SingleOrDefault(r => r.Name == "Farmer");
+            var employeeRole = db.Roles.SingleOrDefault(r => r.Name == "Employee");
             if (farmerRole == null)
             {
                 // Handle case where the "Farmer" role does not exist
@@ -33,9 +35,12 @@ namespace AgriEnergyConnectPlatform.Controllers
             }
 
             var farmers = userManager.Users.Where(u => u.Roles.Any(r => r.RoleId == farmerRole.Id)).ToList();
+            var employees = userManager.Users.Where(u => u.Roles.Any(r => r.RoleId == employeeRole.Id)).ToList();
+            
             var products = db.Products.Include(p => p.User).ToList();
 
             ViewBag.Farmers = farmers;
+            ViewBag.Employees = employees;
             return View(products);
         }
 
@@ -43,14 +48,12 @@ namespace AgriEnergyConnectPlatform.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> AddEmployee(string employeeName, string employeeEmail, string employeePassword)
         {
-            Debug.WriteLine("employee Name" + employeeName);
-            Debug.WriteLine("employee Email" + employeeEmail);
+
             var employee = new User
             {
                 UserName = employeeEmail,
                 Name = employeeName,
                 Email = employeeEmail
-          
             };
 
             var result = await userManager.CreateAsync(employee, employeePassword);
@@ -65,22 +68,42 @@ namespace AgriEnergyConnectPlatform.Controllers
                 {
                     // Handle case where the "Employee" role does not exist
                     ModelState.AddModelError("", "Employee role not found.");
-                    return RedirectToAction("EmployeeDashboard");
+                    return RedirectToAction("Index");
                 }
 
-                return RedirectToAction("EmployeeDashboard");
+                return RedirectToAction("Index");
             }
 
+            // Handle errors
+            ModelState.AddModelError("", "Error adding employee");
+            return RedirectToAction("Index");
+        }
 
-            return RedirectToAction("EmployeeDashboard");
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> DeleteEmployee(string employeeId)
+        {
+            var employee = await userManager.FindByIdAsync(employeeId);
+            if (employee == null)
+            {
+                ModelState.AddModelError("", "Employee not found.");
+                return RedirectToAction("Index");
+            }
+
+            var result = await userManager.DeleteAsync(employee);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", "Error deleting employee");
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin, Employee")]
         public async Task<ActionResult> AddFarmer(string farmerName, string farmerEmail, string farmerPassword)
         {
-
-     
             var farmer = new User
             {
                 UserName = farmerEmail,
@@ -100,15 +123,41 @@ namespace AgriEnergyConnectPlatform.Controllers
                 {
                     // Handle case where the "Farmer" role does not exist
                     ModelState.AddModelError("", "Farmer role not found.");
-                    return RedirectToAction("EmployeeDashboard");
+                    return RedirectToAction("Index");
                 }
 
-                return RedirectToAction("EmployeeDashboard");
+                return RedirectToAction("Index");
             }
 
             // Handle errors
             ModelState.AddModelError("", "Error adding farmer");
-            return RedirectToAction("EmployeeDashboard");
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> DeleteFarmer(string farmerId)
+        {
+            var farmer = await userManager.FindByIdAsync(farmerId);
+            if (farmer == null)
+            {
+                ModelState.AddModelError("", "Farmer not found.");
+                return RedirectToAction("Index");
+            }
+
+            // Delete all products associated with the farmer
+            var products = db.Products.Where(p => p.UserId == farmerId);
+            db.Products.RemoveRange(products);
+
+            var result = await userManager.DeleteAsync(farmer);
+            if (result.Succeeded)
+            {
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", "Error deleting farmer");
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -147,20 +196,29 @@ namespace AgriEnergyConnectPlatform.Controllers
             {
                 // Handle case where the "Farmer" role does not exist
                 ModelState.AddModelError("", "Farmer role not found.");
-                return View("EmployeeDashboard", products.ToList());
+                return View("Index");
+            }
+
+            var employeeRole = db.Roles.SingleOrDefault(r => r.Name == "Employee");
+            if (farmerRole == null)
+            {
+                // Handle case where the "Farmer" role does not exist
+                ModelState.AddModelError("", "Employee role not found.");
+                return View("Index");
             }
 
             var farmers = userManager.Users.Where(u => u.Roles.Any(r => r.RoleId == farmerRole.Id)).ToList();
+            var employees = userManager.Users.Where(u => u.Roles.Any(r => r.RoleId == employeeRole.Id)).ToList();
 
             ViewBag.Farmers = farmers;
+            ViewBag.Employees = employees;
             ViewBag.FarmerId = farmerId;
             ViewBag.ProductName = productName;
             ViewBag.Category = category;
             ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
             ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
 
-            return View("EmployeeDashboard", products.ToList());
+            return View("Index", products.ToList());
         }
-
     }
 }

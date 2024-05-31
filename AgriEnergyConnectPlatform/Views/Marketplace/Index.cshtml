@@ -1,0 +1,87 @@
+﻿@using Data.Extensions
+@model IEnumerable<Data.Models.Product>
+
+@{
+    Layout = "~/Views/Shared/FarmerLayout.cshtml";
+    ViewBag.Title = "Green Energy Marketplace";
+}
+
+<div class="">
+    <div class="scrollable-content">
+        <div class="header text-start w-100 p-5">
+            <h1 class="display-4 green-title">Green Energy<br>Marketplace</h1>
+        </div>
+
+        <div class="container mt-4 tab-content-background">
+            <!-- Filter Products Form -->
+            <div class="">
+                <form id="filterForm" method="get" action="@Url.Action("FilterProducts", "Marketplace")" class="d-flex flex-wrap">
+                    <div class="form-group col-md-2 d-flex flex-column align-items-center mx-1">
+                        <label class="profile-label text-center w-100" for="ProductName">Product Name</label>
+                        <input type="text" class="form-control text-center" id="ProductName" name="ProductName" value="@ViewBag.ProductName">
+                    </div>
+                    <div class="form-group col-md-2 d-flex flex-column align-items-center mx-1">
+                        <label class="profile-label text-center w-100" for="Category">Category</label>
+                        <select class="form-control text-center" id="Category" name="Category">
+                            <option value="">All Categories</option>
+                            @foreach (var category in ViewBag.Categories)
+                            {
+                                <option value="@category" @(category == ViewBag.SelectedCategory ? "selected" : "")>@category</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2 d-flex flex-column align-items-center mx-1">
+                        <label class="profile-label text-center w-100" for="MinPrice">Min Price</label>
+                        <input type="number" class="form-control text-center" id="MinPrice" name="MinPrice" value="@ViewBag.MinPrice" step="0.01">
+                    </div>
+                    <div class="form-group col-md-2 d-flex flex-column align-items-center mx-1">
+                        <label class="profile-label text-center w-100" for="MaxPrice">Max Price</label>
+                        <input type="number" class="form-control text-center" id="MaxPrice" name="MaxPrice" value="@ViewBag.MaxPrice" step="0.01">
+                    </div>
+                    <div class="form-group col-md d-flex flex-row align-items-end">
+                        <button type="button" class="btn btn-secondary mx-1" onclick="clearFilterForm()">Clear</button>
+                        <button type="submit" class="btn btn-success mx-1">Filter</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Products grid -->
+            <div class="row" id="productGrid">
+                @if (Model.Count() > 0)
+                {
+                    foreach (var product in Model)
+                    {
+                        <div class="col-md-6 col-lg-3 mb-4">
+                            <div class="card product-card">
+                                <img src="@Url.Content(product.ProductImagePath)" class="card-img-top" alt="@product.ProductName">
+                                <div class="card-body">
+                                    <h5 class="card-title product-label">@product.ProductName</h5>
+                                    <p class="card-text product-price-label">R @product.Price</p>
+                                    @if (product.Stock > 0)
+                                    {
+                                        <p class="card-text product-label">In Stock</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="card-text product-label">Out of Stock</p>
+                                    }
+                                    <button class="btn btn-success">Add to cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function clearFilterForm() {
+        document.getElementById('ProductName').value = '';
+        document.getElementById('Category').value = '';
+        document.getElementById('MinPrice').value = '';
+        document.getElementById('MaxPrice').value = '';
+    }
+</script>
+
+

@@ -3,28 +3,38 @@ using System.Web.Optimization;
 
 namespace AgriEnergyConnectPlatform
 {
+    /// <summary>
+    /// Handles the configuration of bundling and minification for the application.
+    /// </summary>
     public class BundleConfig
     {
-        // For more information on bundling, visit https://go.microsoft.com/fwlink/?LinkId=301862
+        /// <summary>
+        /// Registers the JavaScript and CSS bundles for the application.
+        /// </summary>
+        /// <param name="bundles">The collection of bundles for the application.</param>
         public static void RegisterBundles(BundleCollection bundles)
         {
+            // Add jQuery library bundle
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
+            // Add jQuery validation library bundle
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
-            // Use the development version of Modernizr to develop with and learn from. Then, when you're
-            // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.
+            // Add Modernizr library bundle
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
+            // Add Bootstrap library bundle
             bundles.Add(new Bundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
 
+            // Add CSS styles bundle
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/Site.css"));
         }
     }
 }
+//-----------------------------------------------------END-OF-FILE-----------------------------------------------------//

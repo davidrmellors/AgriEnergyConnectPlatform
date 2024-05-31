@@ -215,9 +215,12 @@ html, body {
 }
 
 .product-card .card-img-top {
-    height: 200px;
-    width: 100%;
-    object-fit: contain; /* or cover if you want the image to cover the entire area */
+        height: 200px;
+        width: 100%;
+        object-fit: contain;
+        margin: 0; /* Remove any default margin */
+        padding: 0; /* Remove any default padding */
+        border-radius: 0; /* Ensure images have no border radius */
 }
 
 .product-card .card-body {
@@ -265,4 +268,33 @@ learn-more-btn:focus {
     color: #dc3545 !important;
     font-weight: 400;
     text-shadow: none;
+}
+
+.project-card {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.project-name {
+    color: #304C30; /* Green title color */
+    font-weight: 700;
+}
+
+.project-description {
+    color: #6c757d; /* Text color */
+}
+
+
+.card {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-text {
+    flex-grow: 1;
 }

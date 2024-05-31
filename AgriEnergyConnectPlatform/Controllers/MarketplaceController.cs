@@ -16,9 +16,10 @@ namespace AgriEnergyConnectPlatform.Controllers
         private AgriConnectContext db = new AgriConnectContext();
 
         [Authorize]
-        public ActionResult Marketplace(string search, decimal? price, int? rating, string carbon)
+        public ActionResult Index(string search, decimal? price, int? rating, string carbon)
         {
             var products = db.Products.AsQueryable();
+            var categories = db.Products.Select(p => p.Category).Distinct().ToList();
 
             if (!string.IsNullOrEmpty(search))
             {
@@ -29,7 +30,7 @@ namespace AgriEnergyConnectPlatform.Controllers
             {
                 products = products.Where(p => p.Price <= price.Value);
             }
-
+            ViewBag.Categories = categories;
             return View(products.ToList());
         }
 
@@ -71,7 +72,7 @@ namespace AgriEnergyConnectPlatform.Controllers
             }
 
             // Redirect to the marketplace page or show a success message
-            return RedirectToAction("Marketplace", "Marketplace");
+            return RedirectToAction("MyProfile", "Account");
         }
 
         [HttpPost]
@@ -121,8 +122,46 @@ namespace AgriEnergyConnectPlatform.Controllers
                 return RedirectToAction("MyProfile", "Account");
             }
 
-            return View("MyProfile");
+            return RedirectToAction("MyProfile", "Account");
         }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult FilterProducts(string productName, string category, decimal? minPrice, decimal? maxPrice)
+        {
+            var products = db.Products.AsQueryable();
+
+            if (!string.IsNullOrEmpty(productName))
+            {
+                products = products.Where(p => p.ProductName.Contains(productName));
+            }
+
+            if (!string.IsNullOrEmpty(category))
+            {
+                products = products.Where(p => p.Category.Contains(category));
+            }
+
+            if (minPrice.HasValue)
+            {
+                products = products.Where(p => p.Price >= minPrice.Value);
+            }
+
+            if (maxPrice.HasValue)
+            {
+                products = products.Where(p => p.Price <= maxPrice.Value);
+            }
+
+            var categories = db.Products.Select(p => p.Category).Distinct().ToList();
+            ViewBag.ProductName = productName;
+            ViewBag.Categories = categories;
+            ViewBag.SelectedCategory = category;
+            ViewBag.MinPrice = minPrice;
+            ViewBag.MaxPrice = maxPrice;
+
+            return View("Index", products.ToList());
+        }
+
+
 
         [HttpPost]
         [Authorize]

@@ -10,11 +10,18 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace AgriEnergyConnectPlatform.App_Start
 {
+    /// <summary>
+    /// Startup class for the application.
+    /// </summary>
     public class Startup
     {
+//-------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Configures the application.
+        /// </summary>
+        /// <param name="app">The application builder.</param>
         public void Configuration(IAppBuilder app)
         {
-
             // Configure the db context, user manager, and sign-in manager to use a single instance per request
             app.CreatePerOwinContext(() => new Data.AgriConnectContext());
             app.CreatePerOwinContext<UserManager<User>>((options, context) =>
@@ -25,10 +32,8 @@ namespace AgriEnergyConnectPlatform.App_Start
                     context.Get<UserManager<User>>(),
                     context.Authentication));
 
-            app.CreatePerOwinContext<RoleManager<IdentityRole>>((options, context) => 
+            app.CreatePerOwinContext<RoleManager<IdentityRole>>((options, context) =>
             new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context.Get<Data.AgriConnectContext>())));
-
-
 
             // Enable the application to use a cookie to store information for the signed in user
             app.UseCookieAuthentication(new CookieAuthenticationOptions
@@ -40,6 +45,11 @@ namespace AgriEnergyConnectPlatform.App_Start
             ConfigureRoles(app);
         }
 
+        /// <summary>
+        /// Factory method for creating a UserManager.
+        /// </summary>
+        /// <param name="context">The database context.</param>
+        /// <returns>A UserManager for users.</returns>
         private UserManager<User> UserManagerFactory(Data.AgriConnectContext context)
         {
             var manager = new UserManager<User>(new UserStore<User>(context));
@@ -47,6 +57,11 @@ namespace AgriEnergyConnectPlatform.App_Start
             return manager;
         }
 
+//-------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Configures the roles for the application.
+        /// </summary>
+        /// <param name="app">The application builder.</param>
         private void ConfigureRoles(IAppBuilder app)
         {
             app.Use(async (context, next) =>
@@ -72,7 +87,6 @@ namespace AgriEnergyConnectPlatform.App_Start
                 await next();
             });
         }
-
-
     }
 }
+//-----------------------------------------------------END-OF-FILE-----------------------------------------------------//

@@ -42,37 +42,82 @@ namespace AgriEnergyConnectPlatform
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
             var userManager = new UserManager<User>(new UserStore<User>(context));
 
-            // In Startup creating first Admin Role and creating a default Admin User 
-            if (roleManager.RoleExists("Admin"))
+            // Creating Admin role if it does not exist
+            if (!roleManager.RoleExists("Admin"))
             {
+                var role = new IdentityRole();
+                role.Name = "Admin";
+                roleManager.Create(role);
+            }
 
+            // Creating default Admin user if it does not exist
+            if (userManager.FindByEmail("admin@agriconnect.co.za") == null)
+            {
                 var admin = new User
                 {
-                    UserName = "david",
-                    Email = "david@admin.com",
-                    Name = "david admin"
+                    UserName = "admin@agriconnect.co.za",
+                    Email = "admin@agriconnect.co.za",
+                    Name = "Admin"
                 };
 
                 string adminPassword = "Admin@123";
-
                 var result = userManager.Create(admin, adminPassword);
                 if (result.Succeeded)
                 {
-                    var adminRole = context.Roles.SingleOrDefault(r => r.Name == "Admin");
-                    if (adminRole != null)
-                    {
-                        userManager.AddToRoleAsync(admin.Id, "Admin");
-                    }
+                    userManager.AddToRole(admin.Id, "Admin");
                 }
-               
             }
 
-            // Creating Farmer role    
+            
+
+            // Creating employee role if it does not exist
+            if (!roleManager.RoleExists("Employee"))
+            {
+                var role = new IdentityRole();
+                role.Name = "Employee";
+                roleManager.Create(role);
+            }
+
+            if (userManager.FindByEmail("employee@agriconnect.co.za") == null)
+            {
+                var employee = new User
+                {
+                    UserName = "employee@agriconnect.co.za",
+                    Email = "employee@agriconnect.co.za",
+                    Name = "Employee"
+                };
+
+                string employeePassword = "Employee@123";
+                var result = userManager.Create(employee, employeePassword);
+                if (result.Succeeded)
+                {
+                    userManager.AddToRole(employee.Id, "Employee");
+                }
+            }
+
+            // Creating Farmer role if it does not exist
             if (!roleManager.RoleExists("Farmer"))
             {
                 var role = new IdentityRole();
                 role.Name = "Farmer";
                 roleManager.Create(role);
+            }
+
+            if (userManager.FindByEmail("farmer@agriconnect.co.za") == null)
+            {
+                var farmer = new User
+                {
+                    UserName = "farmer@agriconnect.co.za",
+                    Email = "farmer@agriconnect.co.za",
+                    Name = "Farmer"
+                };
+
+                string farmerPassword = "Farmer@123";
+                var result = userManager.Create(farmer, farmerPassword);
+                if (result.Succeeded)
+                {
+                    userManager.AddToRole(farmer.Id, "Farmer");
+                }
             }
         }
     }
