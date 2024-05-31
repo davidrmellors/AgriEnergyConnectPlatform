@@ -15,6 +15,7 @@ using Data.Extensions;
 
 namespace AgriEnergyConnectPlatform.Controllers
 {
+//-------------------------------------------------------------------------------------------------------------
     /// <summary>
     /// Controller for managing user accounts.
     /// </summary>
@@ -25,6 +26,7 @@ namespace AgriEnergyConnectPlatform.Controllers
         private RoleManager<IdentityRole> _roleManager;
         private AgriConnectContext db = new AgriConnectContext();
 
+//-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// Default constructor.
         /// </summary>
@@ -32,6 +34,7 @@ namespace AgriEnergyConnectPlatform.Controllers
         {
         }
 
+//-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// Constructor with parameters.
         /// </summary>
@@ -43,6 +46,7 @@ namespace AgriEnergyConnectPlatform.Controllers
             _roleManager = roleManager;
         }
 
+//-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// User manager property.
         /// </summary>
@@ -58,6 +62,7 @@ namespace AgriEnergyConnectPlatform.Controllers
             }
         }
 
+//-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// Sign in manager property.
         /// </summary>
@@ -73,6 +78,7 @@ namespace AgriEnergyConnectPlatform.Controllers
             }
         }
 
+//-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// Role manager property.
         /// </summary>
@@ -88,6 +94,7 @@ namespace AgriEnergyConnectPlatform.Controllers
             }
         }
 
+//-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// GET: Account
         /// </summary>
@@ -96,6 +103,7 @@ namespace AgriEnergyConnectPlatform.Controllers
             return View();
         }
 
+//-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// GET: Login
         /// </summary>
@@ -105,6 +113,7 @@ namespace AgriEnergyConnectPlatform.Controllers
             return View();
         }
 
+//-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// POST: Logout
         /// </summary>
@@ -116,9 +125,11 @@ namespace AgriEnergyConnectPlatform.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+//-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// GET: MyProfile
         /// </summary>
+        [Authorize]
         public ActionResult MyProfile()
         {
             string userId = User.Identity.GetUserId();
@@ -126,6 +137,7 @@ namespace AgriEnergyConnectPlatform.Controllers
             return View(products);
         }
 
+//-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// POST: Login
         /// </summary>
@@ -139,7 +151,7 @@ namespace AgriEnergyConnectPlatform.Controllers
                 return View(model);
             }
 
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: false, shouldLockout: false);
             if (result != SignInStatus.Success)
             {
                 ModelState.AddModelError("", "Invalid login attempt.");
@@ -155,6 +167,7 @@ namespace AgriEnergyConnectPlatform.Controllers
             return RedirectToAction("Index", "FarmingHub");
         }
 
+//-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// POST: UpdateProfile
         /// </summary>
@@ -193,6 +206,7 @@ namespace AgriEnergyConnectPlatform.Controllers
             return RedirectToAction("MyProfile", new { Message = ManageMessageId.ProfileUpdated });
         }
 
+//-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// GET: Register
         /// </summary>
@@ -201,6 +215,7 @@ namespace AgriEnergyConnectPlatform.Controllers
             return View();
         }
 
+//-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// POST: Register
         /// </summary>
@@ -227,6 +242,7 @@ namespace AgriEnergyConnectPlatform.Controllers
             return RedirectToAction("Login", "Account");
         }
 
+//-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// Adds errors to the ModelState.
         /// </summary>
@@ -238,6 +254,7 @@ namespace AgriEnergyConnectPlatform.Controllers
             }
         }
 
+//-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// Enum for managing messages.
         /// </summary>
@@ -249,3 +266,4 @@ namespace AgriEnergyConnectPlatform.Controllers
         }
     }
 }
+//-----------------------------------------------------END-OF-FILE-----------------------------------------------------//

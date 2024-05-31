@@ -6,12 +6,19 @@ using System.Web.Mvc;
 
 namespace AgriEnergyConnectPlatform.Controllers
 {
+    /// <summary>
+    /// Controller for managing projects.
+    /// </summary>
     public class ProjectsController : Controller
     {
-        // GET: Projects
+        /// <summary>
+        /// Returns the Index view of the Projects section.
+        /// </summary>
+        /// <returns>The Index view of the Projects section.</returns>
         public ActionResult Index()
         {
             return View();
         }
     }
 }
+//-----------------------------------------------------END-OF-FILE-----------------------------------------------------//

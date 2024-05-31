@@ -6,27 +6,20 @@ using System.Web.Mvc;
 
 namespace AgriEnergyConnectPlatform.Controllers
 {
+    /// <summary>
+    /// Controller for handling the home page of the application.
+    /// </summary>
     public class HomeController : Controller
     {
+        /// <summary>
+        /// Returns the Index view of the Home section.
+        /// </summary>
+        /// <returns>The Index view of the Home section.</returns>
         public ActionResult Index()
         {
             ViewBag.Title = "Home";
             return View();
         }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-
     }
 }
+//-----------------------------------------------------END-OF-FILE-----------------------------------------------------//

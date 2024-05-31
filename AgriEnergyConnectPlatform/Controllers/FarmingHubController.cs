@@ -6,9 +6,16 @@ using System.Web.Mvc;
 
 namespace AgriEnergyConnectPlatform.Controllers
 {
+    /// <summary>
+    /// Controller for the FarmingHub section of the application.
+    /// </summary>
     public class FarmingHubController : Controller
     {
-        // GET: FarmingHub
+        /// <summary>
+        /// Returns the Index view of the FarmingHub section.
+        /// This action is only accessible to authorized users.
+        /// </summary>
+        /// <returns>The Index view of the FarmingHub section.</returns>
         [Authorize]
         public ActionResult Index()
         {
@@ -16,3 +23,4 @@ namespace AgriEnergyConnectPlatform.Controllers
         }
     }
 }
+//-----------------------------------------------------END-OF-FILE-----------------------------------------------------//

@@ -18,8 +18,15 @@ using System.Threading.Tasks;
 
 namespace AgriEnergyConnectPlatform
 {
+//-------------------------------------------------------------------------------------------------------------
+    /// <summary>
+    /// The main application class for the AgriEnergyConnectPlatform.
+    /// </summary>
     public class MvcApplication : System.Web.HttpApplication
     {
+        /// <summary>
+        /// The method that gets called when the application starts.
+        /// </summary>
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -33,15 +40,19 @@ namespace AgriEnergyConnectPlatform
             AppDomain.CurrentDomain.SetData("DataDirectory", absolutePath);
 
             CreateRolesAndUsers();
-
         }
 
+//-------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Creates the roles and users for the application.
+        /// </summary>
         private void CreateRolesAndUsers()
         {
             AgriConnectContext context = new AgriConnectContext();
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
             var userManager = new UserManager<User>(new UserStore<User>(context));
 
+        //-------------------------------------------------------------------------------------------------------------
             // Creating Admin role if it does not exist
             if (!roleManager.RoleExists("Admin"))
             {
@@ -50,6 +61,7 @@ namespace AgriEnergyConnectPlatform
                 roleManager.Create(role);
             }
 
+        //-------------------------------------------------------------------------------------------------------------
             // Creating default Admin user if it does not exist
             if (userManager.FindByEmail("admin@agriconnect.co.za") == null)
             {
@@ -68,8 +80,7 @@ namespace AgriEnergyConnectPlatform
                 }
             }
 
-            
-
+        //-------------------------------------------------------------------------------------------------------------
             // Creating employee role if it does not exist
             if (!roleManager.RoleExists("Employee"))
             {
@@ -78,6 +89,7 @@ namespace AgriEnergyConnectPlatform
                 roleManager.Create(role);
             }
 
+        //-------------------------------------------------------------------------------------------------------------
             if (userManager.FindByEmail("employee@agriconnect.co.za") == null)
             {
                 var employee = new User
@@ -95,6 +107,7 @@ namespace AgriEnergyConnectPlatform
                 }
             }
 
+        //-------------------------------------------------------------------------------------------------------------
             // Creating Farmer role if it does not exist
             if (!roleManager.RoleExists("Farmer"))
             {
@@ -103,6 +116,7 @@ namespace AgriEnergyConnectPlatform
                 roleManager.Create(role);
             }
 
+        //-------------------------------------------------------------------------------------------------------------
             if (userManager.FindByEmail("farmer@agriconnect.co.za") == null)
             {
                 var farmer = new User
@@ -119,6 +133,8 @@ namespace AgriEnergyConnectPlatform
                     userManager.AddToRole(farmer.Id, "Farmer");
                 }
             }
+        //-------------------------------------------------------------------------------------------------------------
         }
     }
 }
+//-----------------------------------------------------END-OF-FILE-----------------------------------------------------//

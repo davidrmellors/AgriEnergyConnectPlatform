@@ -11,10 +11,17 @@ using System.Web.Mvc;
 
 namespace AgriEnergyConnectPlatform.Controllers
 {
+    /// <summary>
+    /// Controller for managing the marketplace.
+    /// </summary>
     public class MarketplaceController : Controller
     {
         private AgriConnectContext db = new AgriConnectContext();
 
+//-------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Returns the marketplace view with products filtered by the provided parameters.
+        /// </summary>
         [Authorize]
         public ActionResult Index(string search, decimal? price, int? rating, string carbon)
         {
@@ -34,7 +41,10 @@ namespace AgriEnergyConnectPlatform.Controllers
             return View(products.ToList());
         }
 
-
+//-------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Adds a new product to the marketplace.
+        /// </summary>
         [HttpPost]
         [Authorize]
         public ActionResult AddProduct(string productName, string productDescription, string category, decimal productPrice, int productStock, DateTime productionDate, HttpPostedFileBase productImage)
@@ -75,13 +85,15 @@ namespace AgriEnergyConnectPlatform.Controllers
             return RedirectToAction("MyProfile", "Account");
         }
 
+//-------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Updates an existing product in the marketplace.
+        /// </summary>
         [HttpPost]
         [Authorize]
         public ActionResult UpdateProduct(int productId, string productName, string productDescription, string category, string price, int stock, DateTime productionDate, HttpPostedFileBase productImage)
         {
-
             // Parse the price from string to decimal using a specific culture
-            
             var parsedPrice = decimal.Parse(price.Replace('.', ','));
 
             var product = db.Products.Find(productId);
@@ -125,6 +137,10 @@ namespace AgriEnergyConnectPlatform.Controllers
             return RedirectToAction("MyProfile", "Account");
         }
 
+//-------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Filters products in the marketplace based on the provided parameters.
+        /// </summary>
         [HttpGet]
         [Authorize]
         public ActionResult FilterProducts(string productName, string category, decimal? minPrice, decimal? maxPrice)
@@ -161,8 +177,10 @@ namespace AgriEnergyConnectPlatform.Controllers
             return View("Index", products.ToList());
         }
 
-
-
+//-------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Deletes a product from the marketplace.
+        /// </summary>
         [HttpPost]
         [Authorize]
         public ActionResult DeleteProduct(int productId)
@@ -180,3 +198,4 @@ namespace AgriEnergyConnectPlatform.Controllers
         }
     }
 }
+//-----------------------------------------------------END-OF-FILE-----------------------------------------------------//
