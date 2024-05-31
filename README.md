@@ -4,7 +4,7 @@
 
 ## Overview
 
-AgriEnergyConnectPlatform is a prototype web application developed as part of the PROG7311 university module project. The platform aims to bridge the gap between the agricultural sector and green energy technology providers, promoting sustainable farming practices and the adoption of renewable energy solutions.
+AgriEnergyConnectPlatform is a prototype web application developed by myself (David Mellors, ST10241466)) as part of my PROG7311 university module. The platform aims to bridge the gap between the agricultural sector and green energy technology providers, promoting sustainable farming practices and the adoption of renewable energy solutions.
 
 ## Table of Contents
 
