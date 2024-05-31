@@ -1,5 +1,7 @@
 # AgriEnergyConnectPlatform
 
+[GitHub](https://github.com/davidrmellors/AgriEnergyConnectPlatform)
+
 ## Overview
 
 AgriEnergyConnectPlatform is a prototype web application developed as part of the PROG7311 university module project. The platform aims to bridge the gap between the agricultural sector and green energy technology providers, promoting sustainable farming practices and the adoption of renewable energy solutions.
@@ -59,6 +61,23 @@ Ensure you have the following installed:
 
     Set the `AgriEnergyConnectPlatform` project as the startup project. Run the application by clicking `Debug` > `Start Debugging` or pressing `F5`. The application should launch in your default web browser.
 
+## Login Details
+When starting up for the first time, please make sure to use one of the following default user credentials:
+
+### Default Admin Credentials:
+
+**Email:** admin@agriconnect.co.za
+**Password:** Admin@123
+
+### Default Employee Credentials:
+**Email:** employee@agriconnect.co.za
+**Password:** Employee@123
+
+### Default Farmer Credentials:
+**Email:** farmer@agriconnect.co.za
+**Password:** Farmer@123
+
+
 ## System Functionalities and User Roles
 
 ### User Roles
@@ -91,7 +110,7 @@ Ensure you have the following installed:
 
 ## Contributing
 
-We welcome contributions from the community. Please follow these steps to contribute:
+I welcome contributions from the community. Please follow these steps to contribute:
 
 1. Fork the repository.
 2. Create a new branch (`git checkout -b feature/your-feature-name`).
