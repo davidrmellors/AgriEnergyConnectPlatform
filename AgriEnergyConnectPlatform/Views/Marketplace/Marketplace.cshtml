@@ -15,30 +15,46 @@
             <!-- Search bar and filters -->
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div class="input-group search-bar">
-                    <input type="text" class="form-control" placeholder="Search for products...">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search for products...">
                     <div class="input-group-append">
-                        <button class="btn btn-outline-success" type="button"><i class="fas fa-search"></i></button>
+                        <button class="btn btn-outline-success" type="button" onclick="applyFilters()"><i class="fas fa-search"></i></button>
                     </div>
                 </div>
                 <div class="filter-icons d-flex align-items-center">
                     <div class="filter-item mr-3">
                         <i class="fas fa-dollar-sign"></i>
                         <span>Price Range</span>
+                        <input type="range" id="priceRange" min="0" max="1000" step="10" onchange="applyFilters()">
                     </div>
                     <div class="filter-item mr-3">
                         <i class="fas fa-star"></i>
                         <span>Rating</span>
+                        <select id="ratingFilter" onchange="applyFilters()">
+                            <option value="">All</option>
+                            <option value="1">1 Star</option>
+                            <option value="2">2 Stars</option>
+                            <option value="3">3 Stars</option>
+                            <option value="4">4 Stars</option>
+                            <option value="5">5 Stars</option>
+                        </select>
                     </div>
                     <div class="filter-item">
                         <i class="fas fa-leaf"></i>
                         <span>Carbon Emission</span>
+                        <select id="carbonFilter" onchange="applyFilters()">
+                            <option value="">All</option>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
                     </div>
                 </div>
             </div>
 
             <!-- Products grid -->
-            <div class="row">
-                @if (Model.Count() > 0) {
+            <div class="row" id="productGrid">
+                @if (Model.Count() > 0)
+                {
                     foreach (var product in Model)
                     {
                         <div class="col-md-6 col-lg-3 mb-4">
@@ -47,7 +63,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title product-label">@product.ProductName</h5>
                                     <p class="card-text product-price-label">R @product.Price</p>
-                                    @if (product.Stock > 0) 
+                                    @if (product.Stock > 0)
                                     {
                                         <p class="card-text product-label">In Stock</p>
                                     }
@@ -65,8 +81,42 @@
         </div>
     </div>
 </div>
+<script>
+    function applyFilters() {
+        const searchInput = document.getElementById('searchInput').value.toLowerCase();
+        const priceRange = document.getElementById('priceRange').value;
+        const ratingFilter = document.getElementById('ratingFilter').value;
+        const carbonFilter = document.getElementById('carbonFilter').value;
 
+        const productCards = document.querySelectorAll('.product-card');
+        productCards.forEach(card => {
+            const productName = card.querySelector('.product-label').textContent.toLowerCase();
+            const productPrice = parseFloat(card.querySelector('.product-price-label').textContent.replace('R', '').trim());
+            const productStock = card.querySelector('.product-label').textContent.trim().toLowerCase();
+            // Assume we have data attributes for rating and carbon emission
+            const productRating = card.getAttribute('data-rating');
+            const productCarbon = card.getAttribute('data-carbon');
 
+            let isVisible = true;
 
+            if (searchInput && !productName.includes(searchInput)) {
+                isVisible = false;
+            }
+            if (priceRange && productPrice > parseFloat(priceRange)) {
+                isVisible = false;
+            }
+            if (ratingFilter && ratingFilter !== productRating) {
+                isVisible = false;
+            }
+            if (carbonFilter && carbonFilter !== productCarbon) {
+                isVisible = false;
+            }
 
-
+            if (isVisible) {
+                card.parentElement.style.display = 'block';
+            } else {
+                card.parentElement.style.display = 'none';
+            }
+        });
+    }
+</script>

@@ -1,4 +1,4 @@
-﻿@using Data.Extensions
+﻿﻿@using Data.Extensions
 @model IEnumerable<Data.Models.Product>
 
 @{
@@ -26,24 +26,40 @@
             </div>
             <div class="card-body">
                 <form method="post" action="@Url.Action("UpdateProfile", "Account")">
+                    @Html.AntiForgeryToken()
+
+                    <!-- Profile Edit Fields -->
                     <div class="form-group">
-                        <label class="profile-label" for="FirstName">First Name</label>
-                        <input type="text" class="form-control" id="FirstName" name="FirstName" value="@User.Identity.GetUserFirstName()" required>
+                        <label class="profile-label" for="Name">First Name</label>
+                        <input type="text" class="form-control" id="Name" name="Name" value="@User.Identity.GetUserFirstName()" required>
                     </div>
                     <div class="form-group profile">
                         <label class="profile-label" for="Email">Email</label>
                         <input type="email" class="form-control" id="Email" name="Email" value="@User.Identity.GetUserEmail()" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Update Profile</button>
+
+                    <!-- Change Password Fields -->
+                    <div class="form-group">
+                        <label class="profile-label" for="CurrentPassword">Current Password</label>
+                        <input type="password" class="form-control" id="CurrentPassword" name="CurrentPassword">
+                    </div>
+                    <div class="form-group">
+                        <label class="profile-label" for="NewPassword">New Password</label>
+                        <input type="password" class="form-control" id="NewPassword" name="NewPassword">
+                    </div>
+                    <div class="form-group">
+                        <label class="profile-label" for="ConfirmPassword">Confirm New Password</label>
+                        <input type="password" class="form-control" id="ConfirmPassword" name="ConfirmPassword">
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Update Profile</button>
                 </form>
             </div>
         </div>
 
-
-
         @if (User.IsInRole("Farmer"))
         {
-            <button class="btn btn-primary mb-4" type="button" data-bs-toggle="collapse" data-bs-target="#addProductForm" aria-expanded="false" aria-controls="addProductForm">
+            <button class="btn btn-success mb-4" type="button" data-bs-toggle="collapse" data-bs-target="#addProductForm" aria-expanded="false" aria-controls="addProductForm">
                 Add New Product
             </button>
 
@@ -100,14 +116,8 @@
                                 <p class="card-text product-price-label">R @product.Price</p>
                                 <p class="card-text product-label">Production Date: @product.ProductionDate.ToShortDateString()</p>
                                 <p class="card-text product-label">Category: @product.Category</p>
-                                @if (product.Stock > 0)
-                                {
-                                    <p class="card-text product-label">In Stock</p>
-                                }
-                                else
-                                {
-                                    <p class="card-text product-label">Out of Stock</p>
-                                }
+                                <p class="card-text product-label">Qty: @product.Stock</p>
+
                                 <div class="d-flex justify-content-between">
                                     <button class="btn btn-secondary edit-product-btn"
                                             data-bs-toggle="modal"
@@ -134,57 +144,56 @@
                     </div>
                 }
             </div>
-
-            <!-- Edit Product Modal -->
-            <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="editProductForm" method="post" action="@Url.Action("UpdateProduct", "Marketplace")" enctype="multipart/form-data">
-                                <input type="hidden" id="editProductId" name="productId" />
-                                <div class="form-group">
-                                    <label for="editProductName" class="col-form-label">Product Name:</label>
-                                    <input type="text" class="form-control" id="editProductName" name="productName" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="editProductDescription" class="col-form-label">Product Description:</label>
-                                    <textarea class="form-control" id="editProductDescription" name="productDescription" required></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="editCategory" class="col-form-label">Category:</label>
-                                    <input type="text" class="form-control" id="editCategory" name="category" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="editPrice" class="col-form-label">Price:</label>
-                                    <input type="number" step="0.01" class="form-control" id="editPrice" name="price" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="editStock" class="col-form-label">Stock:</label>
-                                    <input type="number" class="form-control" id="editStock" name="stock" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="editProductionDate" class="col-form-label">Production Date:</label>
-                                    <input type="date" class="form-control" id="editProductionDate" name="productionDate" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="editProductImage" class="col-form-label">Product Image:</label>
-                                    <input type="file" class="form-control" id="editProductImage" name="productImage" accept="image/*" />
-                                </div>
-                                <button type="submit" class="btn btn-primary">Update Product</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
         }
-
-
     </div>
 </div>
+
+<!-- Edit Product Modal -->
+<div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header tab-nav-background">
+                <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editProductForm" method="post" action="@Url.Action("UpdateProduct", "Marketplace")" enctype="multipart/form-data">
+                    <input type="hidden" id="editProductId" name="productId" />
+                    <div class="form-group">
+                        <label for="editProductName" class="profile-label">Product Name:</label>
+                        <input type="text" class="form-control" id="editProductName" name="productName" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="editProductDescription" class="profile-label">Product Description:</label>
+                        <textarea class="form-control" id="editProductDescription" name="productDescription" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCategory" class="profile-label">Category:</label>
+                        <input type="text" class="form-control" id="editCategory" name="category" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="editPrice" class="profile-label">Price:</label>
+                        <input type="number" step="0.01" class="form-control" id="editPrice" name="price" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="editStock" class="profile-label">Stock:</label>
+                        <input type="number" class="form-control" id="editStock" name="stock" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="editProductionDate" class="profile-label">Production Date:</label>
+                        <input type="date" class="form-control" id="editProductionDate" name="productionDate" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="editProductImage" class="profile-label">Product Image:</label>
+                        <input type="file" class="form-control" id="editProductImage" name="productImage" accept="image/*" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -217,8 +226,6 @@
             editStockInput.value = stock;
             editProductionDateInput.value = productionDate;
         });
-
-
     });
 
     function confirmDelete(productId) {
@@ -226,5 +233,4 @@
             document.getElementById('deleteForm-' + productId).submit();
         }
     }
-
 </script>

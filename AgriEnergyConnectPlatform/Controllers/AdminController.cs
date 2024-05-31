@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Data.Entity;
+using System.Diagnostics;
 
 namespace AgriEnergyConnectPlatform.Controllers
 {
@@ -42,10 +43,14 @@ namespace AgriEnergyConnectPlatform.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> AddEmployee(string employeeName, string employeeEmail, string employeePassword)
         {
+            Debug.WriteLine("employee Name" + employeeName);
+            Debug.WriteLine("employee Email" + employeeEmail);
             var employee = new User
             {
-                Email = employeeEmail,
-                Name = employeeName
+                UserName = employeeEmail,
+                Name = employeeName,
+                Email = employeeEmail
+          
             };
 
             var result = await userManager.CreateAsync(employee, employeePassword);
@@ -74,6 +79,8 @@ namespace AgriEnergyConnectPlatform.Controllers
         [Authorize(Roles = "Admin, Employee")]
         public async Task<ActionResult> AddFarmer(string farmerName, string farmerEmail, string farmerPassword)
         {
+
+     
             var farmer = new User
             {
                 UserName = farmerEmail,
@@ -127,12 +134,12 @@ namespace AgriEnergyConnectPlatform.Controllers
 
             if (startDate.HasValue)
             {
-                products = products.Where(p => p.ProductionDate >= startDate.Value);
+                products = products.Where(p => p.ProductionDate >= startDate);
             }
 
             if (endDate.HasValue)
             {
-                products = products.Where(p => p.ProductionDate <= endDate.Value);
+                products = products.Where(p => p.ProductionDate <= endDate);
             }
 
             var farmerRole = db.Roles.SingleOrDefault(r => r.Name == "Farmer");
@@ -146,7 +153,14 @@ namespace AgriEnergyConnectPlatform.Controllers
             var farmers = userManager.Users.Where(u => u.Roles.Any(r => r.RoleId == farmerRole.Id)).ToList();
 
             ViewBag.Farmers = farmers;
+            ViewBag.FarmerId = farmerId;
+            ViewBag.ProductName = productName;
+            ViewBag.Category = category;
+            ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
+            ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
+
             return View("EmployeeDashboard", products.ToList());
         }
+
     }
 }

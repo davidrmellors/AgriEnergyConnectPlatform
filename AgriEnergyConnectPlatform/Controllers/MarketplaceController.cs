@@ -16,11 +16,23 @@ namespace AgriEnergyConnectPlatform.Controllers
         private AgriConnectContext db = new AgriConnectContext();
 
         [Authorize]
-        public ActionResult Marketplace()
+        public ActionResult Marketplace(string search, decimal? price, int? rating, string carbon)
         {
-            var products = db.Products.ToList();
-            return View(products);
+            var products = db.Products.AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                products = products.Where(p => p.ProductName.Contains(search));
+            }
+
+            if (price.HasValue)
+            {
+                products = products.Where(p => p.Price <= price.Value);
+            }
+
+            return View(products.ToList());
         }
+
 
         [HttpPost]
         [Authorize]

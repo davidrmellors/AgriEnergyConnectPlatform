@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Data;
+using Data.Extensions;
 
 namespace AgriEnergyConnectPlatform.Controllers
 {
@@ -97,6 +98,7 @@ namespace AgriEnergyConnectPlatform.Controllers
             return View(products);
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model)
@@ -119,14 +121,60 @@ namespace AgriEnergyConnectPlatform.Controllers
                     ModelState.AddModelError("", "Invalid login attempt.");
                 }
             }
+            else
+            {
+                ModelState.AddModelError("", "Invalid login attempt.");
+            }
 
             return View(model);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> UpdateProfile(string name, string email, string currentPassword, string newPassword, string confirmPassword)
+        {
+
+
+            // Update Profile Information
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            if (user != null)
+            {
+                user.Name = name;
+                user.Email = email;
+                if (!string.IsNullOrEmpty(currentPassword) && !string.IsNullOrEmpty(newPassword) && !string.IsNullOrEmpty(confirmPassword))
+                {
+                    var passwordChangeResult = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), currentPassword, newPassword);
+                    if (!passwordChangeResult.Succeeded)
+                    {
+                        AddErrors(passwordChangeResult);
+                    }
+                }
+                var updateResult = await UserManager.UpdateAsync(user);
+                if (!updateResult.Succeeded)
+                {
+                    AddErrors(updateResult);
+                }
+            }
+
+            // Change Password if provided
+            
+
+            // Sign in the user with the updated information
+            if (user != null)
+            {
+                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+            }
+
+            return RedirectToAction("MyProfile", new { Message = ManageMessageId.ProfileUpdated });
+        }
+
+
 
         public ActionResult Register()
         {
             return View();
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -155,6 +203,13 @@ namespace AgriEnergyConnectPlatform.Controllers
             {
                 ModelState.AddModelError("", error);
             }
+        }
+
+        public enum ManageMessageId
+        {
+            ChangePasswordSuccess,
+            ProfileUpdated, // Add this line
+            Error
         }
     }
 }
