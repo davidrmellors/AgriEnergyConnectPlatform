@@ -1,7 +1,3 @@
-Based on the provided project requirements for your PROG7311 university module project, here is a comprehensive README for the "AgriEnergyConnectPlatform":
-
----
-
 # AgriEnergyConnectPlatform
 
 ## Overview
